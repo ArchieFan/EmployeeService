@@ -11,7 +11,7 @@
             $('#btn').click(function () {
                 $.ajax({
                     type: 'GET',
-                    url: 'api/employee/',
+                    url: 'http://localhost:62154/api/employee/',
                     dataType: 'json',
                     success: function (data) {
                         ulem.empty();

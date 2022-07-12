@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using WebApiContrib.Formatting.Jsonp;
 
 namespace EmployeeService
 {
@@ -35,6 +37,21 @@ namespace EmployeeService
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //config.Filters.Add(new RequireHttpsAttribute());
+
+            //config.Filters.Add(new AuthorizeAttribute());
+
+            
+
+            // CORS
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
+
+            //JSONP
+            //var jsonpFormatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
+            //config.Formatters.Insert(0, jsonpFormatter);
+
             //// (Approach 2) How to return JSON instead of XML from ASP.NET Web API Service when a request is made from the browser.
             //config.Formatters.Add(new CustomJsonFormatter());
 

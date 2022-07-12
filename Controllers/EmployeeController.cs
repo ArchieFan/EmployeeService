@@ -5,26 +5,34 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using EmployeeDataAccess;
+using System.Web.Http.Cors;
+using System.Threading;
 
 namespace EmployeeService.Controllers
 {
     public class EmployeeController : ApiController
     {
         [HttpGet]
+        [RequireHttps]
+        [BasicAuthentication]
         public HttpResponseMessage LoadAllEmployeeList(string gender="All")
         {
+            string username = Thread.CurrentPrincipal.Identity.Name;
+
             using (EmployeeDBEntities entities = new EmployeeDBEntities())
             {
-                switch(gender.ToLower())
+                //switch(gender.ToLower())
+                switch (username.ToLower())
                 {
                     case "all":
                         return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.ToList());
                     case "male":
-                        return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.Where(e => e.Gender.ToLower() == "male").ToList());
+                        return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.Where(e => e.Gender.Equals("male",StringComparison.OrdinalIgnoreCase)).ToList());
                     case "female":
-                        return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.Where(e => e.Gender.ToLower() == "female").ToList());
+                        return Request.CreateResponse(HttpStatusCode.OK, entities.Employees.Where(e => e.Gender.Equals("female", StringComparison.OrdinalIgnoreCase)).ToList());
                     default:
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, $"Value of gender must be all, male, or female. ({gender}) is invalid.");
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,$"Value not found");
+                        //return Request.CreateErrorResponse(HttpStatusCode.BadRequest, $"Value of gender must be all, male, or female. ({gender}) is invalid.");
                 };
             }
         }
@@ -48,6 +56,7 @@ namespace EmployeeService.Controllers
             }
         }
 
+        [EnableCors("*", "*", "*")]
         public HttpResponseMessage Post([FromBody] Employee emp)
         {
             try
@@ -70,6 +79,7 @@ namespace EmployeeService.Controllers
  
         }
 
+        [DisableCors]
         public HttpResponseMessage Delete(int id)
         {
             try
