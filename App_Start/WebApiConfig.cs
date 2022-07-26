@@ -6,6 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Routing;
 using WebApiContrib.Formatting.Jsonp;
 
 namespace EmployeeService
@@ -32,17 +33,23 @@ namespace EmployeeService
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+
+            RouteTable.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+            ).RouteHandler = new MyHttpControllerRouteHandler();
 
             //config.Filters.Add(new RequireHttpsAttribute());
 
             //config.Filters.Add(new AuthorizeAttribute());
 
-            
+
 
             // CORS
             EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
