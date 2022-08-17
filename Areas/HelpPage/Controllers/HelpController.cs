@@ -1,8 +1,8 @@
+using EmployeeService.Areas.HelpPage.ModelDescriptions;
+using EmployeeService.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using EmployeeService.Areas.HelpPage.ModelDescriptions;
-using EmployeeService.Areas.HelpPage.Models;
 
 namespace EmployeeService.Areas.HelpPage.Controllers
 {
